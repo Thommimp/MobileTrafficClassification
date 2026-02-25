@@ -7,7 +7,10 @@ authors = [
     { name = "Jakob Thrane", email = "jthr@tdcnet.dk" }
 ]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "marimo>=0.20.2",
+    "polars>=1.38.1",
+]
 
 [project.scripts]
 tdcnet-mtc = "tdcnet_mtc:main"

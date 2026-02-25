@@ -18,3 +18,9 @@ And pull data with
 ```shell
 git lfs pull
 ```
+
+Example notebook can be found at
+
+```shell
+uv run marimo edit src/notebooks/example.py
+```
