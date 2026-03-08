@@ -10,9 +10,16 @@ def _():
     import pandas as pd
     from tdcnet_mtc.constants import data_root
     import matplotlib.pyplot as plt
-    from plot_functions import plot_feature_on_time 
 
-    return data_root, pd, plot_feature_on_time
+    from plot_functions import plot_feature_on_time, plot_two_cells, average_feature_across_tower 
+    from model import stats_model_by_season  
+    return (
+        average_feature_across_tower,
+        data_root,
+        pd,
+        plot_feature_on_time,
+        plot_two_cells,
+    )
 
 
 @app.cell
@@ -37,13 +44,24 @@ def _(df):
 
 @app.cell
 def _(df, plot_feature_on_time):
-    plot_feature_on_time(df, "R1", "3C", "nr_dl_peak_active_ues")
+    stats_model_by_season(df, "R1") 
     return
 
 
 @app.cell
-def _(df, plot_feature_on_time):
-    plot_feature_on_time(df, "U1", "3C", "nr_dl_peak_active_ues")
+def _(average_feature_across_tower, df):
+    average_feature_across_tower(df, "R1", "nr_dl_avg_active_ues")
+    return
+
+@app.cell
+def _(average_feature_across_tower, df):
+    average_feature_across_tower(df, "U1", "nr_dl_avg_active_ues")
+    return
+
+@app.cell
+def _(df, plot_two_cells):
+    plot_two_cells(df, "R1", "3C", "U1", "3C", "nr_dl_avg_active_ues")
+    plot_two_cells(df, "R1", "3C", "U1", "3C", "pm_sinr_pusch_max")
     return
 
 
