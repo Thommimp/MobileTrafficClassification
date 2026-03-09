@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-
+import seaborn as sns
 
 def plot_feature_on_time(df, tower, cell, feature):
     subset = df[(df["site_mapped"] == tower) & (df["cell_mapped"] == cell)].copy()
@@ -67,3 +67,15 @@ def average_feature_across_tower(df, tower, feature):
 
     plt.show()
 
+def plot_heat_map(df):
+    # drop non-numeric / ID columns if they exist
+    drop_cols = ["site_mapped", "cell_mapped", "datetime", "tech"]
+    df_feats = df.drop(columns=[c for c in drop_cols if c in df.columns])
+    
+    # correlation matrix
+    corr = df_feats.corr()
+    
+    # visualize
+    plt.figure(figsize=(12,10))
+    sns.heatmap(corr, annot=True, fmt=".2f", cmap="coolwarm")
+    plt.show()
