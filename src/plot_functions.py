@@ -68,10 +68,11 @@ def average_feature_across_tower(df, tower, feature):
     plt.show()
 
 def plot_heat_map(df):
-    # drop non-numeric / ID columns if they exist
-    drop_cols = ["site_mapped", "cell_mapped", "datetime", "tech"]
-    df_feats = df.drop(columns=[c for c in drop_cols if c in df.columns])
-    
+    # columns we dont want to normalize
+    drop_cols = ["site_mapped", "cell_mapped", "datetime"]
+
+    # drop columns
+    df_feats = df.drop(columns=drop_cols)
     # correlation matrix
     corr = df_feats.corr()
     

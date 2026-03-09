@@ -1,3 +1,4 @@
+from scipy.stats import zscore
 
 def remove_small_length(df, threshold):
     for site, site_df in df.groupby("site_mapped"):
@@ -88,14 +89,16 @@ def combine_columns(df):
 
     return df
 
+
+
 def normalize_values(df):
     cols_to_skip = ["cell_mapped", "site_mapped", "datetime"]
     cols_to_normalize = df.columns.difference(cols_to_skip)
-
+     
     for col in cols_to_normalize:
         mean = df.groupby(["site_mapped", "cell_mapped"])[col].transform("mean")
         std = df.groupby(["site_mapped", "cell_mapped"])[col].transform("std")
         df[col] = (df[col] - mean) / std
-
+        #df[col] = df.groupby(["site_mapped", "cell_mapped"])[col].transform(zscore, ddof=1)
     return df
 
