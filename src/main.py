@@ -23,7 +23,6 @@ def _():
         plot_heat_map,
         plot_two_cells,
         remove_small_length,
-        stats_model_by_season,
     )
 
 
@@ -41,6 +40,34 @@ def _(df, normalize_values, remove_small_length):
     .pipe(normalize_values)
      )
     return (df_processed,)
+
+
+@app.cell
+def _(df_processed):
+    from plot_functions import PCA_analysis
+    PCA_analysis(df_processed)
+    return
+
+
+@app.cell
+def _(df_processed):
+    from plot_functions import box_plot_summer_vs_other
+    box_plot_summer_vs_other(df_processed, "nr_ul_avg_active_ues", "W")
+    return
+
+
+@app.cell
+def _(df_processed):
+    from plot_functions import box_plot_STD
+    box_plot_STD(df_processed, "nr_dl_avg_active_ues", freq="D")
+    return
+
+
+@app.cell
+def _(df_processed):
+    from plot_functions import box_plot_weekday_vs_weekend
+    box_plot_weekday_vs_weekend(df_processed, "nr_dl_avg_active_ues")
+    return
 
 
 @app.cell
@@ -84,6 +111,10 @@ def _(df_processed, plot_two_cells):
 @app.cell
 def _(df_processed, plot_heat_map):
     plot_heat_map(df_processed)
+    print(df_processed[[
+    "nr_ul_avg_active_ues",
+    "lte_ul_avg_active_ues"
+    ]].corr())
     return
 
 
@@ -91,20 +122,6 @@ def _(df_processed, plot_heat_map):
 def _(average_feature_across_tower, df_processed):
     #4g doesnt seem to share the same patterns as 5g?
     average_feature_across_tower(df_processed, "R1", "lte_dl_avg_active_ues")
-    return
-
-
-@app.cell
-def _(df_processed, stats_model_by_season):
-    stats_model_by_season(df_processed, "U1") 
-    stats_model_by_season(df_processed, "U2") 
-    return
-
-
-@app.cell
-def _(df_processed, stats_model_by_season):
-    stats_model_by_season(df_processed, "R1") 
-    stats_model_by_season(df_processed, "R2") 
     return
 
 
